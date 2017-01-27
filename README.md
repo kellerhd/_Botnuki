@@ -8,6 +8,6 @@ This bot utilizes Discord.NET 1.0 and, as of right now, has the following purpos
 The commands are as follows:
 
 - /roleadd [role1] [role2] etc(or /addrole)
-- /roleremove [role1] [role2] (or /removerole /rolerem /remrole)
+- /roleremove [role1] [role2] etc (or /removerole /rolerem /remrole)
 - /mute [user]
 - /unmute [user]
