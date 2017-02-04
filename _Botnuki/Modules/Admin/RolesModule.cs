@@ -5,13 +5,16 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Collections.Generic;
+using System.Text;
 
 namespace _Botnuki.Modules.Admin
 {
     class RolesModule : ModuleBase
     {
+        string[] AuthorizedRoles = { "league", "smite", "paladins", "battlerite", "ark" };
+
         // methods
-        [Command("roleadd"), Alias("addrole")]
+        [Command("roleadd"), Alias("addrole", "ra", "ar", "addroles", "rolesadd")]
         [Summary("Allow a user to add a role or multiple roles to themself")]
         public async Task RoleAdd(params string[] roles)
         {
@@ -20,7 +23,6 @@ namespace _Botnuki.Modules.Admin
                 var chan = Context.Channel;
                 var userinfo = Context.User as SocketGuildUser;
                 var g = Context.Guild;
-                string[] AuthorizedRoles = { "league", "smite", "paladins", "battlerite", "ark" };
 
                 var userRoleIDs = userinfo.RoleIds.ToList();
                 List<IRole> RolesAuthed = new List<IRole>();
@@ -52,7 +54,7 @@ namespace _Botnuki.Modules.Admin
             }
         }
 
-        [Command("roleremove"), Alias("rolerem", "removerole", "remrole")]
+        [Command("roleremove"), Alias("rolerem", "removerole", "remrole", "rr", "rrem", "rolesremove", "rolesrem", "removeroles", "remroles")]
         [Summary("Allow a user to remove a role from themself, or another user if allowed")]
         public async Task RoleRemove(params string[] roles)
         {
@@ -61,7 +63,7 @@ namespace _Botnuki.Modules.Admin
                 var chan = Context.Channel;
                 var userinfo = Context.User as SocketGuildUser;
                 var g = Context.Guild;
-                string[] AuthorizedRoles = { "league", "smite", "paladins", "battlerite", "ark" };
+                
 
                 var userRoleIDs = userinfo.RoleIds.ToList();
                 List<IRole> RolesAuthed = new List<IRole>();
@@ -91,6 +93,19 @@ namespace _Botnuki.Modules.Admin
             {
                 await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleRemove", ex.Message));
             }
+        }
+
+        [Command("roles"), Summary("A help command explaining roles authorized")]
+        public async Task Roles()
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append($"You are allowed to use me to add the following roles to your user profile:\n");
+
+            foreach(string s in AuthorizedRoles)
+            {
+                str.Append($"• {s}\n");
+            }
+            await ReplyAsync(str.ToString());
         }
 
         [Command("mute"), RequireContext(ContextType.Guild)]
