@@ -32,7 +32,7 @@ namespace _Botnuki.Modules.Admin
                     var ro = GetRole(g, r.ToLower());
                     if (!(AuthorizedRoles.Contains(ro.Name.ToLower())))
                     {
-                        await ReplyAsync($"{ro.Name} is not a role you are allowed to add.");
+                        await ReplyAsync($"The role you tried to add either doesn't exist or is not a role you are authorized for.");
                     }
                     else
                     {
@@ -48,9 +48,11 @@ namespace _Botnuki.Modules.Admin
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
-                await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleAdd", ex.Message));
+                await ReplyAsync("The role you have tried to add is not authorized.");
+                
+                //await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleAdd", ex.Message));
             }
         }
 
@@ -73,7 +75,7 @@ namespace _Botnuki.Modules.Admin
                     var ro = GetRole(g, r.ToLower());
                     if (!(AuthorizedRoles.Contains(ro.Name.ToLower())))
                     {
-                        await ReplyAsync($"{ro.Name} is not a role you are allowed to add.");
+                        await ReplyAsync($"The role you tried to remove either doesn't exist or is not a role you are authorized for.");
                     }
                     else
                     {
@@ -89,9 +91,10 @@ namespace _Botnuki.Modules.Admin
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
-                await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleRemove", ex.Message));
+                await ReplyAsync("The role you have tried to remove is not authorized.");
+                //await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleRemove", ex.Message));
             }
         }
 
