@@ -61,8 +61,16 @@ namespace _Botnuki
 
         private Task Log(LogMessage msg)
         {
-            Console.WriteLine(msg.ToString());
-            return Task.CompletedTask;
+            try
+            {
+                Console.WriteLine(msg.ToString());
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ErrorHandling.ThrowGenException("Program.cs", "Log(LogMessage)", ex.Message));
+                return null;
+            }
         }
 
     }
