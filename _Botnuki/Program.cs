@@ -36,7 +36,7 @@ namespace _Botnuki
                 // log in and connect
                 Console.WriteLine("Connecting to server. . .");
                 await _client.LoginAsync(TokenType.Bot, token);
-                await _client.ConnectAsync();
+                await _client.StartAsync();
 
                 // dependency map
                 var map = new DependencyMap();
