@@ -23,8 +23,7 @@ namespace _Botnuki.Modules.Admin
                 var chan = Context.Channel;
                 var userinfo = Context.User as SocketGuildUser;
                 var g = Context.Guild;
-
-                var userRoleIDs = userinfo.RoleIds.ToList();
+                var userRoleIDs = userinfo.Roles.ToList(); //.RoleIds.ToList();
                 List<IRole> RolesAuthed = new List<IRole>();
 
                 foreach (string r in roles)
@@ -48,12 +47,13 @@ namespace _Botnuki.Modules.Admin
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 await ReplyAsync("The role you have tried to add is not authorized.");
                 
-                //await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleAdd", ex.Message));
+                Console.WriteLine(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleAdd", ex.Message));
             }
+
         }
 
         [Command("roleremove"), Alias("rolerem", "removerole", "remrole", "rr", "rrem", "rolesremove", "rolesrem", "removeroles", "remroles")]
@@ -67,7 +67,7 @@ namespace _Botnuki.Modules.Admin
                 var g = Context.Guild;
                 
 
-                var userRoleIDs = userinfo.RoleIds.ToList();
+                var userRoleIDs = userinfo.Roles.ToList();
                 List<IRole> RolesAuthed = new List<IRole>();
 
                 foreach (string r in roles)
@@ -91,10 +91,10 @@ namespace _Botnuki.Modules.Admin
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 await ReplyAsync("The role you have tried to remove is not authorized.");
-                //await ReplyAsync(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleRemove", ex.Message));
+                Console.WriteLine(ErrorHandling.ThrowGenException("RolesModule.cs", "RoleRemove", ex.Message));
             }
         }
 
@@ -130,9 +130,10 @@ namespace _Botnuki.Modules.Admin
                 await ReplyAsync($"User {u.Nickname} has been muted!");
 
             }
-            catch
+            catch (Exception ex)
             {
                 await ReplyAsync("You do not have permission to use this command!");
+                Console.WriteLine(ErrorHandling.ThrowGenException("RolesModule", "Mute", ex.Message));
             }
         }
 
@@ -155,9 +156,10 @@ namespace _Botnuki.Modules.Admin
                 await ReplyAsync($"User {u.Nickname} has been unmuted!");
 
             }
-            catch
+            catch (Exception ex)
             {
                 await ReplyAsync("You do not have permission to use this command!");
+                Console.WriteLine(ErrorHandling.ThrowGenException("RolesModule", "Unmute", ex.Message));
             }
         }
 
@@ -179,12 +181,13 @@ namespace _Botnuki.Modules.Admin
             try
             {
                 string[] ValidRoles = { "owners", "manager", "moderators" };
-                List<ulong> userRoleIDs = u.RoleIds.ToList();
-                int i, count = userRoleIDs.Count();
+                var userRoles = u.Roles.ToList();
+                int i, count = userRoles.Count();
 
                 for (i = 0; i < count; i++)
                 {
-                    var roleComp = GetRole(g, userRoleIDs[i]);
+                    ulong userRoleID = userRoles[i].Id;
+                    var roleComp = GetRole(g, userRoleID);
 
                     for (int j = 0; j < ValidRoles.Count(); j++)
                     {
@@ -197,7 +200,7 @@ namespace _Botnuki.Modules.Admin
             }
             catch (Exception ex)
             {
-                chan.SendMessageAsync($"⚠️ Error when attempting RoleSearch. {ex.Message}").ConfigureAwait(false);
+                Console.WriteLine($"⚠️ Error when attempting RoleSearch. {ex.Message}");
                 return false;
             }
         }
